@@ -1,0 +1,126 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct node
+{
+    int PRN;
+    string Name;
+    node *next;
+};
+
+class Club
+{
+public:
+    node *head, *tail;
+
+    Club()
+    {
+        head = tail = NULL;
+    }
+
+    void create();            
+    void display();         
+    int count();             
+    void concatenate(Club &); 
+};
+
+// Create Club List
+void Club::create()
+{
+    char ch;
+    do
+    {
+        node *nnode = new node;
+        nnode->next = NULL;
+
+        cout << "\nEnter PRN: ";
+        cin >> nnode->PRN;
+
+        cout << "Enter Name: ";
+        cin >> nnode->Name;
+
+        if (head == NULL) // First node = President
+        {
+            head = tail = nnode;
+        }
+        else              // Last node = Secretary
+        {
+            tail->next = nnode;
+            tail = nnode;
+        }
+
+        cout << "Add more members? (y/n): ";
+        cin >> ch;
+
+    } while (ch == 'y' || ch == 'Y');
+}
+
+// Display Club Members
+void Club::display()
+{
+    if (head == NULL)
+    {
+        cout << "\nClub list is empty.\n";
+        return;
+    }
+
+    cout << "\nPRN\tName\n";
+    node *temp = head;
+
+    while (temp != NULL)
+    {
+        cout << temp->PRN << "\t" << temp->Name << endl;
+        temp = temp->next;
+    }
+}
+
+// Count Club Members
+int Club::count()
+{
+    int cnt = 0;
+    node *temp = head;
+
+    while (temp != NULL)
+    {
+        cnt++;
+        temp = temp->next;
+    }
+    return cnt;
+}
+void Club::concatenate(Club &obj2)
+{
+    if (head == NULL)             // if 1st list is empty
+        head = obj2.head;
+    else if (obj2.head != NULL)  // Add obj2 at the end of obj1
+        tail->next = obj2.head;
+
+    tail = obj2.tail;   
+}
+
+int main()
+{
+    Club DivA, DivB;
+
+    cout << "\nEnter members for Division A:" << endl;
+    DivA.create();
+
+    cout << "\nEnter members for Division B:" << endl;
+    DivB.create();
+
+    cout << "\n Division A Members ";
+    DivA.display();
+
+    cout << "\n Division B Members ";
+    DivB.display();
+
+    cout << "\n After Concatenating Division A and Division B Club lists..." << endl;
+    DivA.concatenate(DivB);
+
+    DivA.display();
+
+    int total = DivA.count();
+    cout << "\nTotal Members in Pinnacle Club (after concatenation): " << total << endl;
+
+    return 0;
+}
