@@ -1,0 +1,60 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct cust {
+    string name;
+    int TellNo;
+};
+
+int main() {
+    cust DHash[10];
+    int total, tel, n;
+    string tname;
+
+    // Initialize
+    for (int i = 0; i < 10; i++) {
+        DHash[i].name = "none";
+        DHash[i].TellNo = -1;
+    }
+
+    cout << "\nHow many records? ";
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        cout << "\nEnter Name: ";
+        cin >> tname;
+        cout << "Enter Telephone Number: ";
+        cin >> tel;
+
+        total = 0;
+        for (int k = 0; tname[k] != '\0'; k++) {
+            total += tname[k];
+        }
+
+        int h = total % 10;
+        int h2 = 7 - (total % 7);
+        int flag = 0;
+
+        // Double Hashing Collision Handling
+        for (int j = 0; j < 10; j++) {
+            int idx = (h + j * h2) % 10;
+            if (DHash[idx].TellNo == -1) {
+                DHash[idx].TellNo = tel;
+                DHash[idx].name = tname;
+                flag = 1;
+                break;
+            }
+        }
+
+        if (flag == 0)
+            cout << "Double hashing failed, no space!";
+    }
+
+    cout << "\nDouble Hashing Hash Table:\n";
+    for (int i = 0; i < 10; i++) {
+        cout << i << " --> " << DHash[i].name << " : " << DHash[i].TellNo << endl;
+    }
+
+    return 0;
+}
