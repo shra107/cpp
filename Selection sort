@@ -1,0 +1,78 @@
+#include <iostream>
+using namespace std;
+
+int main()
+{
+int n, i, j, pass;
+
+// Selection Sort Input  
+cout << "\nHow many students for Selection Sort? ";  
+cin >> n;  
+
+float S[20];  
+
+cout << "Enter percentage of students:\n";  
+for (i = 0; i < n; i++)  
+{  
+    cin >> S[i];  
+}  
+
+cout << "\nBefore Sorting: ";  
+for (i = 0; i < n; i++)  
+{  
+    cout << S[i] << " ";  
+}  
+cout << endl;  
+
+// Selection Sort Logic  
+for (pass = 0; pass < n - 1; pass++)  
+{  
+    int minI = pass;  
+    int comparisons = 0;  
+    float temp;  
+
+    for (j = pass + 1; j < n; j++)  
+    {  
+        comparisons++;  
+        if (S[j] < S[minI])  
+        {  
+            minI = j;  
+        }  
+    }  
+
+    // Swap smallest element  
+    if (minI != pass)  
+    {  
+        temp = S[pass];  
+        S[pass] = S[minI];  
+        S[minI] = temp;  
+    }  
+
+    cout << "Pass " << pass + 1 << " | Comparisons: " << comparisons << " | Array: ";  
+    for (i = 0; i < n; i++)  
+    {  
+        cout << S[i] << " ";  
+    }  
+    cout << endl;  
+}
+
+// Display Top 5 Percentages
+cout << "\nTop 5 Percentages:\n";
+
+if (n >= 5) {  
+    for (i = n - 1; i >= n - 5; i--) {  
+        cout << S[i] << "%" << endl;  
+    }  
+}  
+else {  
+    cout << "There are less than 5 students.\n";  
+    cout << "Displaying available percentages:\n";  
+
+    for (i = n - 1; i >= 0; i--) {  
+        cout << S[i] << "%" << endl;  
+    }  
+}  
+  
+return 0;
+
+}
