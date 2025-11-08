@@ -1,0 +1,104 @@
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+int main()
+{
+    int n, i, p;
+    int A[10];
+    char ch;
+
+    cout << "Total number of students: ";
+    cin >> n;
+
+    for (i = 0; i < n; i++)
+    {
+        cout << "Enter the Roll no. of Student " << i + 1 << ": ";
+        cin >> A[i];
+    }
+
+    cout << "\nRoll numbers of all students: ";
+    for (i = 0; i < n; i++)
+    {
+        cout << A[i] << " ";
+    }
+    cout << endl;
+
+
+    // -------- LINEAR SEARCH --------
+    do {
+        cout << "\nEnter the Roll no. you want to check (Linear Search): ";
+        cin >> p;
+
+        int flag = 0;
+        for (i = 0; i < n; i++)
+        {
+            if (A[i] == p)
+            {
+                flag = 1;
+                break;
+            }
+        }
+
+        if (flag == 1)
+            cout << "Student is present\n";
+        else
+            cout << "Student is absent\n";
+
+        cout << "Do you want to check more? (y/n): ";
+        cin >> ch;
+
+    } while (ch == 'y');
+
+
+
+    // -------- BINARY SEARCH --------
+    sort(A, A + n);
+
+    cout << "\nSorted Roll Numbers are: ";
+    for (i = 0; i < n; i++)
+    {
+        cout << A[i] << " ";
+    }
+    cout << endl;
+
+    char c;
+    do {
+        int b;
+        cout << "\nEnter Roll no. you want to check (Binary Search): ";
+        cin >> b;
+
+        int s = 0, e = n - 1, mid, found = 0;
+
+        while (s <= e)
+        {
+            mid = (s + e) / 2;
+
+            if (A[mid] == b)
+            {
+                found = 1;
+                break;
+            }
+            else if (A[mid] < b)
+            {
+                s = mid + 1;
+            }
+            else
+            {
+                e = mid - 1;
+            }
+        }
+
+        if (found == 1)
+            cout << "Student is present\n";
+        else
+            cout << "Student is absent\n";
+
+        cout << "Do you want to check more roll numbers? (y/n): ";
+        cin >> c;
+
+    } while (c == 'y');
+
+
+    return 0;
+}
