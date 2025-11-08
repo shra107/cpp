@@ -1,0 +1,133 @@
+#include <iostream>
+using namespace std;
+
+struct node {
+int seat_no;
+int status;
+node* prev, *next;
+
+};
+
+class ticket
+{
+node* A[10];
+
+public:
+ticket()
+{
+for (int i = 0; i < 10; i++)
+{
+A[i] = NULL;
+}
+}
+
+void create();  
+void display();  
+void bookSeat();
+
+};
+
+void ticket::create()
+{
+for (int i = 0; i < 10; i++)
+{
+node* head =NULL;
+node* tail = NULL;
+
+for (int j = 1; j <= 7; j++) {  
+        node* nnode = new node;  
+        nnode->seat_no = j;  
+        nnode->status = 0;  
+        nnode->prev = NULL;  
+        nnode->next = NULL;  
+
+        if (head == NULL)  
+		{  
+            head = tail = nnode;  
+        }   
+		else   
+		{  
+            tail->next = nnode;  
+            nnode->prev = tail;  
+            tail = nnode;  
+        }  
+    }  
+      
+    A[i] = head;   
+}
+
+}
+
+void ticket::display()
+{
+cout << "\n The Available Seats are  :\n";
+
+for (int i = 0; i < 10; i++)  
+ {  
+    cout << "Row " << (i + 1) << ": ";  
+    node* temp = A[i];  
+     
+    while (temp != NULL)   
+	{  
+        if (temp->status == 0)  
+		 {  
+            cout << temp->seat_no << " ";  
+              
+        }  
+        temp = temp->next;  
+    }  
+    cout<<endl;  
+}
+
+}
+
+void ticket::bookSeat()
+{
+int row, seat;
+char ch;
+
+do {  
+    cout << "\nEnter Row (1-10): ";  
+    cin >> row;  
+    cout << "Enter Seat (1-7): ";  
+    cin >> seat;  
+
+    
+        node* temp = A[row - 1];  
+        while (temp != NULL && temp->seat_no != seat) {  
+            temp = temp->next;  
+        }  
+
+        if (temp != NULL)   
+		{  
+            if (temp->status == 1)  
+			{  
+                cout << "Seat already booked.\n";  
+            }   
+			else  
+			{  
+                temp->status = 1;  
+                cout << "Seat booked: Row " << row << ", Seat " << seat << "\n";  
+            }  
+        }  
+      
+
+    cout << "Book another seat? (y/n): ";  
+    cin >> ch;  
+
+} while (ch == 'y' || ch == 'Y');
+
+}
+
+int main() {
+ticket bookingSystem;
+
+bookingSystem.create();  
+bookingSystem.display();  
+
+bookingSystem.bookSeat();  
+bookingSystem.display();  
+
+return 0;
+
+}
