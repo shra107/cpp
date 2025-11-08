@@ -1,0 +1,126 @@
+#include<iostream>
+using namespace std;
+
+int M[5][5];
+char city[5];
+int n;
+
+class queue
+{
+public:
+    void represent();
+    void start();
+    int getindex(char ct);
+    void checkConnected();   
+};
+
+void queue::start()
+{
+    int i, j;
+    cout << "Enter the total cities: ";
+    cin >> n;
+
+    for(i = 0; i < n; i++)
+    {
+        cout << "Enter city name: ";
+        cin >> city[i];
+    }
+
+    for(i = 0; i < n; i++)
+    {
+        for(j = 0; j < n; j++)
+        {
+            if(i == j)
+                M[i][j] = 0;
+            else
+                M[i][j] = -1;
+        }
+    }
+}
+
+int queue::getindex(char ct)
+{
+    for(int i = 0; i < n; i++)
+    {
+        if(city[i] == ct)
+            return i;
+    }
+    return -1;
+}
+
+void queue::represent()
+{
+    int p, i, j, c;
+    char s, d;
+
+    cout << "\nEnter total number of paths: ";
+    cin >> p;
+
+    for(int k = 0; k < p; k++)
+    {
+        cout << "\nEnter the source city: ";
+        cin >> s;
+        i = getindex(s);
+        
+        cout << "Enter the destination city: ";
+        cin >> d;
+        j = getindex(d);
+        
+        cout << "Enter the cost for path: ";
+        cin >> c;
+
+        M[i][j] = M[j][i] = c;
+    }
+
+    cout << "\nAdjacency Matrix :\n";
+    for(i = 0; i < n; i++)
+    {
+        for(j = 0; j < n; j++)
+        {
+            cout << M[i][j] << " ";
+        }
+        cout << "\n";
+    }
+
+    checkConnected(); 
+}
+
+void queue::checkConnected()
+{
+    int visited[5] = {0};
+    int q[5], front = 0, rear = -1;
+
+    visited[0] = 1;
+    q[++rear] = 0;
+
+    while(front <= rear)
+    {
+        int node = q[front++];
+        for(int i = 0; i < n; i++)
+        {
+            if(M[node][i] != -1 && visited[i] == 0)
+            {
+                visited[i] = 1;
+                q[++rear] = i;
+            }
+        }
+    }
+
+    for(int i = 0; i < n; i++)
+    {
+        if(visited[i] == 0)
+        {
+            cout << "\nGraph is NOT Connected (some cities are not reachable)\n";
+            return;
+        }
+    }
+
+    cout << "\nGraph is CONNECTED (every city can reach each other)\n";
+
+int main()
+{
+    queue q;
+    q.start();
+    q.represent();
+    return 0;
+}
