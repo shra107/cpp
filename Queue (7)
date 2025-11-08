@@ -1,0 +1,101 @@
+#include <stdio.h>
+
+int Jobqueue[20];
+int front = 0;
+int rear = -1;
+int max = 20;
+
+int IsEmpty()
+{
+    if (front > rear)
+        return 1;
+    else
+        return 0;
+}
+
+int IsFull()
+{
+    if (rear == max - 1)
+        return 1;
+    else
+        return 0;
+}
+
+void enqueue()
+{
+    int j;
+    char ch;
+
+    do
+    {
+        if (!IsFull())
+        {
+            printf("\nEnter the Job No: ");
+            scanf("%d", &j);
+            rear++;
+            Jobqueue[rear] = j;
+        }
+        else
+        {
+            printf("\nQueue Overflow");
+        }
+
+        printf("\nDo you want to add more jobs? (y/n): ");
+        scanf(" %c", &ch);
+
+    } while (ch == 'y' || ch == 'Y');
+}
+
+void dequeue()
+{
+    char ch;
+
+    printf("\nDo you want to delete jobs? (y/n): ");
+    scanf(" %c", &ch);
+
+    if (ch == 'y' || ch == 'Y')
+    {
+        do
+        {
+            if (!IsEmpty())
+            {
+                printf("\nDeleted Job No: %d", Jobqueue[front]);
+                front++;
+            }
+            else
+            {
+                printf("\nQueue Underflow");
+            }
+
+            printf("\nDo you want to delete more jobs? (y/n): ");
+            scanf(" %c", &ch);
+
+        } while (ch == 'y' || ch == 'Y');
+    }
+}
+
+void display()
+{
+    if (!IsEmpty())
+    {
+        printf("\nCurrent Queue: ");
+        for (int i = front; i <= rear; i++)
+        {
+            printf("%d ", Jobqueue[i]);
+        }
+    }
+    else
+    {
+        printf("\nQueue is empty");
+    }
+}
+
+int main()
+{
+    enqueue();
+    display();
+    dequeue();
+    display();
+
+    return 0;
+}
