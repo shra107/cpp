@@ -1,0 +1,128 @@
+#include <iostream>
+using namespace std;
+
+struct node {
+    int data;
+    node *left, *right;
+};
+
+node *root = NULL;
+
+// Insert node in BST
+void insertNode(int val) {
+    node *nn = new node;
+    nn->data = val;
+    nn->left = nn->right = NULL;
+
+    if (root == NULL) {
+        root = nn;
+        return;
+    }
+
+    node *temp = root;
+    while (true) {
+        if (val < temp->data) {
+            if (temp->left == NULL) {
+                temp->left = nn;
+                break;
+            }
+            temp = temp->left;
+        }
+        else {
+            if (temp->right == NULL) {
+                temp->right = nn;
+                break;
+            }
+            temp = temp->right;
+        }
+    }
+}
+
+// ii. Longest path (Height of tree)
+int longestPath(node *root) {
+    if (root == NULL)
+        return 0;
+    int leftH = longestPath(root->left);
+    int rightH = longestPath(root->right);
+    return (leftH > rightH ? leftH : rightH) + 1;
+}
+
+// iii. Minimum data value in BST (leftmost node)
+int findMin(node *root) {
+    if (root == NULL)
+        return -1;
+    while (root->left != NULL)
+        root = root->left;
+    return root->data;
+}
+
+// iv. Swap left and right (mirror tree)
+void mirror(node *root) {
+    if (root == NULL)
+        return;
+    mirror(root->left);
+    mirror(root->right);
+
+    node *temp = root->left;
+    root->left = root->right;
+    root->right = temp;
+}
+
+// v. Search value
+bool searchNode(node *root, int key) {
+    if (root == NULL)
+        return false;
+
+    if (root->data == key)
+        return true;
+
+    if (key < root->data)
+        return searchNode(root->left, key);
+    else
+        return searchNode(root->right, key);
+}
+
+// inorder display (for checking)
+void inorder(node *root) {
+    if (root != NULL) {
+        inorder(root->left);
+        cout << root->data << " ";
+        inorder(root->right);
+    }
+}
+
+int main() {
+    int n, val, ch;
+
+    cout << "Enter total nodes to insert: ";
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        cout << "Enter data: ";
+        cin >> val;
+        insertNode(val);
+    }
+
+    cout << "\nInorder Traversal (sorted BST): ";
+    inorder(root);
+
+    cout << "\n\nLongest path from root: " << longestPath(root);
+
+    cout << "\nMinimum value in tree: " << findMin(root);
+
+    cout << "\nMirror (swap left-right pointers)...\n";
+    mirror(root);
+
+    cout << "Inorder after mirror: ";
+    inorder(root);
+
+    cout << "\n\nEnter value to search: ";
+    cin >> val;
+
+    if (searchNode(root, val))
+        cout << "Value found!";
+    else
+        cout << "Value not found!";
+
+    return 0;
+}
