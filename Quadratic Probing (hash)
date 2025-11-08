@@ -1,0 +1,59 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct cust {
+    string name;
+    int TellNo;
+};
+
+int main() {
+    cust QHash[10];
+    int total, tel, n;
+    string tname;
+
+    // Initialize table
+    for (int i = 0; i < 10; i++) {
+        QHash[i].name = "none";
+        QHash[i].TellNo = -1;
+    }
+
+    cout << "\nHow many records? ";
+    cin >> n;
+
+    for (int i = 0; i < n; i++) {
+        cout << "\nEnter Name: ";
+        cin >> tname;
+        cout << "Enter Telephone Number: ";
+        cin >> tel;
+
+        total = 0;
+        for (int k = 0; tname[k] != '\0'; k++) {
+            total += tname[k];
+        }
+
+        int h = total % 10;
+        int flag = 0;
+
+        // Quadratic Probing Collision Handling
+        for (int j = 0; j < 10; j++) {
+            int idx = (h + j * j) % 10;
+            if (QHash[idx].TellNo == -1) {
+                QHash[idx].TellNo = tel;
+                QHash[idx].name = tname;
+                flag = 1;
+                break;
+            }
+        }
+
+        if (flag == 0)
+            cout << "Quadratic probing failed, table full!";
+    }
+
+    cout << "\nQuadratic Probing Hash Table:\n";
+    for (int i = 0; i < 10; i++) {
+        cout << i << " --> " << QHash[i].name << " : " << QHash[i].TellNo << endl;
+    }
+
+    return 0;
+}
