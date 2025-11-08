@@ -12,86 +12,115 @@ struct node
 class Club
 {
 public:
-    node *head;
+    node *head, *tail;
 
     Club()
     {
-        head = NULL;
+        head = tail = NULL;
     }
 
-    void addPresident();
-    void addSecretary();
-    void addMember();
-    void display();
-    void count();
+    void create();     
+    void display();   
+    void insert();     
+    void count();     
 };
 
-void Club::addPresident()
+void Club::create()
 {
-    node *nnode = new node;
-    cout << "\nEnter PRN of President: ";
-    cin >> nnode->PRN;
-    cout << "Enter Name of President: ";
-    cin >> nnode->Name;
-    nnode->next = head;
-    head = nnode;
-}
+    cout << "Welcome to Pinnacle Club!!!" << endl;
 
-void Club::addSecretary()
-{
-    node *nnode = new node;
-    cout << "\nEnter PRN of Secretary: ";
-    cin >> nnode->PRN;
-    cout << "Enter Name of Secretary: ";
-    cin >> nnode->Name;
-    nnode->next = NULL;
-
-    if (head == NULL)
+    char ch;
+    do
     {
-        head = nnode;
-        return;
-    }
+        node *nnode = new node;
+        nnode->next = NULL;
 
-    node *temp = head;
-    while (temp->next != NULL)
-        temp = temp->next;
+        cout << "\nEnter PRN of user: ";
+        cin >> nnode->PRN;
 
-    temp->next = nnode;
-}
+        cout << "Enter Name of user: ";
+        cin >> nnode->Name;
 
-void Club::addMember()
-{
-    node *nnode = new node;
-    cout << "\nEnter PRN of Member: ";
-    cin >> nnode->PRN;
-    cout << "Enter Name of Member: ";
-    cin >> nnode->Name;
-    nnode->next = NULL;
+        if (head == NULL)     
+        {
+            head = tail = nnode;
+        }
+        else               
+        {
+            tail->next = nnode;
+            tail = nnode;
+        }
 
-    if (head == NULL)
-    {
-        head = nnode;
-        return;
-    }
+        cout << "\nAdd more members? (y/n): ";
+        cin >> ch;
 
-    node *temp = head;
-    while (temp->next != NULL && temp->next->next != NULL)
-        temp = temp->next;
-
-    nnode->next = temp->next;
-    temp->next = nnode;
+    } while (ch == 'y' || ch == 'Y');
 }
 
 void Club::display()
 {
-    node *temp = head;
-    cout << "\n--- Pinnacle Club Members ---\n";
-    cout << "PRN\tName\n";
+    if (head == NULL)
+    {
+        cout << "\nClub member list is empty.\n";
+        return;
+    }
 
+    node *temp = head;
+    cout << "\nPRN\tName" << endl;
     while (temp != NULL)
     {
         cout << temp->PRN << "\t" << temp->Name << endl;
         temp = temp->next;
+    }
+}
+
+void Club::insert()
+{
+    int choice;
+    cout << "\nInsertion Menu:\n";
+    cout << "1. Insert President (at beginning)\n";
+    cout << "2. Insert Secretary (at end)\n";
+    cout << "3. Insert Member (in between)\n";
+    cout << "Enter choice: ";
+    cin >> choice;
+
+    node *nnode = new node;
+    cout << "Enter PRN: ";
+    cin >> nnode->PRN;
+    cout << "Enter Name: ";
+    cin >> nnode->Name;
+    nnode->next = NULL;
+
+    if (choice == 1)            
+    {
+        nnode->next = head;
+        head = nnode;
+        if (tail == NULL)
+            tail = nnode;
+    }
+    else if (choice == 2)       // Insert as Secretary
+    {
+        tail->next = nnode;
+        tail = nnode;
+    }
+    else if (choice == 3)       // Insert as Member
+    {
+        int key;
+        cout << "Insert after PRN: ";
+        cin >> key;
+
+        node *temp = head;
+        while (temp != NULL && temp->PRN != key)
+            temp = temp->next;
+
+        if (temp == NULL)
+        {
+            cout << "PRN NOT FOUND!" << endl;
+            return;
+        }
+
+        nnode->next = temp->next;
+        temp->next = nnode;
     }
 }
 
@@ -106,50 +135,30 @@ void Club::count()
         temp = temp->next;
     }
 
-    cout << "\nTotal Members: " << cnt << endl;
+    cout << "\nTotal members in Pinnacle Club = " << cnt << endl;
 }
 
 int main()
 {
     Club club;
-    int ch;
+    club.create();     
+    club.display();
+    club.count();
 
+    char ch;
     do
     {
-        cout << "\n1. Add President";
-        cout << "\n2. Add Member";
-        cout << "\n3. Add Secretary";
-        cout << "\n4. Display Members";
-        cout << "\n5. Count Members";
-        cout << "\n6. Exit";
-
-        cout << "\nEnter your choice: ";
+        cout << "\nDo you want to insert any member? (y/n): ";
         cin >> ch;
 
-        switch (ch)
+        if (ch == 'y' || ch == 'Y')
         {
-        case 1:
-            club.addPresident();
-            break;
-        case 2:
-            club.addMember();
-            break;
-        case 3:
-            club.addSecretary();
-            break;
-        case 4:
+            club.insert();
             club.display();
-            break;
-        case 5:
             club.count();
-            break;
-        case 6:
-            cout << "\nExiting...";
-            break;
-        default:
-            cout << "\nInvalid choice!\n";
         }
 
-    } while (ch != 6);
+    } while (ch == 'y' || ch == 'Y');
+
     return 0;
 }
