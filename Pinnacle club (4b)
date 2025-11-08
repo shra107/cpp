@@ -1,0 +1,186 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct node
+{
+    int PRN;
+    string Name;
+    node *next;
+};
+
+class Club
+{
+public:
+    node *head, *tail;
+
+    Club()
+    {
+        head = tail = NULL;
+    }
+
+    void create();
+    void display();
+    void del();
+    void count();
+};
+
+void Club::create()
+{
+    cout << "Welcome to club!!!" << endl;
+
+    char ch;
+    do
+    {
+        node *nnode = new node;
+        nnode->next = NULL;
+
+        cout << "Enter PRN of new user: ";
+        cin >> nnode->PRN;
+
+        cout << "Enter name of new user: ";
+        cin >> nnode->Name;
+
+        if (head == NULL)
+        {
+            head = tail = nnode;
+        }
+        else
+        {
+            tail->next = nnode;
+            tail = nnode;
+        }
+
+        cout << "Do you want to add more members in your club? (y/n): ";
+        cin >> ch;
+
+    } while (ch == 'y' || ch == 'Y');
+}
+
+void Club::display()
+{
+    if (head == NULL)
+    {
+        cout << "Linked list is empty." << endl;
+        return;
+    }
+
+    node *temp = head;
+    cout << "\nPRN\tName" << endl;
+    while (temp != NULL)
+    {
+        cout << temp->PRN << "\t" << temp->Name << endl;
+        temp = temp->next;
+    }
+}
+
+void Club::del()
+{
+    int choose;
+    cout << "\nDeletion Menu:\n";
+    cout << "1. Delete at beginning (President)\n";
+    cout << "2. Delete at end (Secretary)\n";
+    cout << "3. Delete member by PRN\n";
+    cout << "Enter your choice: ";
+    cin >> choose;
+
+    if (head == NULL)
+    {
+        cout << "List is empty.\n";
+        return;
+    }
+
+    if (choose == 1)
+    {
+        node *temp = head;
+        head = head->next;
+        delete temp;
+        cout << "President deleted.\n";
+    }
+    else if (choose == 2)
+    {
+        if (head->next == NULL)
+        {
+            delete head;
+            head = tail = NULL;
+            cout << "Secretary deleted.\n";
+            return;
+        }
+
+        node *temp = head;
+        while (temp->next->next != NULL)
+        {
+            temp = temp->next;
+        }
+        delete temp->next;
+        temp->next = NULL;
+        tail = temp;
+        cout << "Secretary deleted.\n";
+    }
+    else if (choose == 3)
+    {
+        int key;
+        cout << "Enter PRN of member to delete: ";
+        cin >> key;
+
+        node *curr = head, *prev = NULL;
+
+        while (curr != NULL && curr->PRN != key)
+        {
+            prev = curr;
+            curr = curr->next;
+        }
+
+        if (curr == NULL)
+        {
+            cout << "Member not found.\n";
+            return;
+        }
+
+        if (curr == head) // deleting head
+            head = head->next;
+        else
+            prev->next = curr->next;
+
+        delete curr;
+        cout << "Member deleted.\n";
+    }
+    else
+    {
+        cout << "Invalid choice.\n";
+    }
+}
+
+void Club::count()
+{
+    int cnt = 0;
+    node *temp = head;
+
+    while (temp != NULL)
+    {
+        cnt++;
+        temp = temp->next;
+    }
+
+    cout << "\nTotal club members = " << cnt << endl;
+}
+
+int main()
+{
+    Club club;
+    club.create();
+    club.display();
+
+    char c;
+    do
+    {
+        club.del();
+        club.display();
+        club.count();
+
+        cout << "\nDo you want to delete more members? (y/n): ";
+        cin >> c;
+    } while (c == 'y' || c == 'Y');
+
+    return 0;
+}
