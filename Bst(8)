@@ -1,0 +1,157 @@
+#include <iostream>
+using namespace std;
+
+struct node {
+    int data;
+    node *left, *right;
+};
+
+node *root = NULL;
+// INSERT NODE 
+void insertNode() {
+    node *nn = new node;
+    cout << "Enter data: ";
+    cin >> nn->data;
+    nn->left = nn->right = NULL;
+
+    if (root == NULL) {
+        root = nn;
+        return;
+    }
+
+    node *temp = root;
+    while (true) {
+        if (nn->data < temp->data) {
+            if (temp->left == NULL) {
+                temp->left = nn;
+                break;
+            }
+            temp = temp->left;
+        }
+        else {
+            if (temp->right == NULL) {
+                temp->right = nn;
+                break;
+            }
+            temp = temp->right;
+        }
+    }
+}
+
+// INORDER DISPLAY 
+void inorder(node *temp) {
+    if (temp != NULL) {
+        inorder(temp->left);
+        cout << temp->data << " ";
+        inorder(temp->right);
+    }
+}
+
+// FIND MINIMUM VALUE 
+void minValue() {
+    if (root == NULL) {
+        cout << "Tree is empty\n";
+        return;
+    }
+
+    node *temp = root;
+    while (temp->left != NULL) {
+        temp = temp->left;
+    }
+
+    cout << "Minimum value in BST = " << temp->data << endl;
+}
+
+// heights 
+int height(node *temp) {
+    if (temp == NULL)
+        return 0;
+
+    int left_h = height(temp->left);
+    int right_h = height(temp->right);
+
+    return max(left_h, right_h) + 1;
+}
+
+// MIRROR TREE 
+void mirror(node *temp) {
+    if (temp == NULL)
+        return;
+
+    // swap the pointers
+    node *t = temp->left;
+    temp->left = temp->right;
+    temp->right = t;
+
+    mirror(temp->left);
+    mirror(temp->right);
+}
+
+// SEARCH VALUE IN BST
+void searchNode() {
+    int key;
+    cout << "Enter value to search: ";
+    cin >> key;
+
+    node *temp = root;
+    while (temp != NULL) {
+        if (key == temp->data) {
+            cout << "Value FOUND in BST\n";
+            return;
+        }
+        else if (key < temp->data)
+            temp = temp->left;
+        else
+            temp = temp->right;
+    }
+    cout << "Value NOT FOUND\n";
+}
+
+// MAIN MENU
+ int main ()
+{  
+    int choice;
+    char ch;
+
+    do {
+        cout << "1. Insert Node\n";
+        cout << "2. Display (Inorder Traversal)\n";
+        cout << "3. Minimum Value\n";
+        cout << "4. Longest Path (Height of Tree)\n";
+        cout << "5. Mirror Tree\n";
+        cout << "6. Search Node\n";
+        cout << "Enter choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: insertNode(); 
+                    break;
+            case 2:
+                cout << "Inorder Traversal: ";
+                inorder(root);
+                cout << endl;
+                break;
+
+            case 3: minValue(); break;
+
+            case 4:
+                cout << "Number of nodes in longest path = " << height(root) << endl;
+                break;
+
+            case 5:
+                mirror(root);
+                cout << "Tree Mirrored Successfully!\n";
+                break;
+
+            case 6: searchNode(); break;
+
+            default: cout << "Invalid Choice\n";
+        }
+
+        cout << "Do you want to continue (Y/N)? ";
+        cin >> ch;
+
+    } while (ch == 'Y' || ch == 'y');
+
+    return 0;
+}
