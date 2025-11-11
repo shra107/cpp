@@ -95,32 +95,26 @@ void Club::insert()
     {
         nnode->next = head;
         head = nnode;
-        if (tail == NULL)
-            tail = nnode;
+        
     }
-    else if (choice == 2)       // Insert as Secretary
+    else if (choice == 2)       
     {
         tail->next = nnode;
         tail = nnode;
     }
-    else if (choice == 3)       // Insert as Member
+    else if (choice == 3)       
     {
         int key;
         cout << "Insert after PRN: ";
         cin >> key;
 
         node *temp = head;
-        while (temp != NULL && temp->PRN != key)
-            temp = temp->next;
-
-        if (temp == NULL)
+        while (temp->PRN != key)
         {
-            cout << "PRN NOT FOUND!" << endl;
-            return;
+            temp = temp->next;
         }
-
         nnode->next = temp->next;
-        temp->next = nnode;
+        temp->next = nnode;        
     }
 }
 
