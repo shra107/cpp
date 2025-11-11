@@ -52,7 +52,7 @@ int main() {
 
     cout << "\nQuadratic Probing Hash Table:\n";
     for (int i = 0; i < 10; i++) {
-        cout << i << " --> " << QHash[i].name << " : " << QHash[i].TellNo << endl;
+        cout << i << " | " << QHash[i].name << " : " << QHash[i].TellNo << endl;
     }
 
     return 0;
