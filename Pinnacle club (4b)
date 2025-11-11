@@ -99,22 +99,14 @@ void Club::del()
     }
     else if (choose == 2)
     {
-        if (head->next == NULL)
-        {
-            delete head;
-            head = tail = NULL;
-            cout << "Secretary deleted.\n";
-            return;
-        }
-
-        node *temp = head;
-        while (temp->next->next != NULL)
-        {
-            temp = temp->next;
-        }
-        delete temp->next;
-        temp->next = NULL;
-        tail = temp;
+        node *temp= head;
+        while (temp->next!= tail)
+          {
+           temp = temp->next;
+          }
+          tail= temp;
+          delete temp -> next;
+          temp->next = NULL; 
         cout << "Secretary deleted.\n";
     }
     else if (choose == 3)
