@@ -25,7 +25,6 @@ public:
     void concatenate(Club &); 
 };
 
-// Create Club List
 void Club::create()
 {
     char ch;
@@ -40,11 +39,11 @@ void Club::create()
         cout << "Enter Name: ";
         cin >> nnode->Name;
 
-        if (head == NULL) // First node = President
+        if (head == NULL) 
         {
             head = tail = nnode;
         }
-        else              // Last node = Secretary
+        else             
         {
             tail->next = nnode;
             tail = nnode;
@@ -56,7 +55,6 @@ void Club::create()
     } while (ch == 'y' || ch == 'Y');
 }
 
-// Display Club Members
 void Club::display()
 {
     if (head == NULL)
@@ -74,8 +72,6 @@ void Club::display()
         temp = temp->next;
     }
 }
-
-// Count Club Members
 int Club::count()
 {
     int cnt = 0;
